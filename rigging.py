@@ -3181,7 +3181,7 @@ def get_bake_action(chr_cache):
     return action, source_type
 
 
-def adv_bake_rigify_for_export(chr_cache, export_rig, objects, accessory_map):
+def adv_bake_rigify_for_export(chr_cache, export_rig, objects, accessory_map, source_action):
     props = vars.props()
 
     armature_action = None
@@ -3210,7 +3210,7 @@ def adv_bake_rigify_for_export(chr_cache, export_rig, objects, accessory_map):
 
             # bake the action on the rigify rig into the export rig
             armature_action, shape_key_actions = bake_rig_animation(chr_cache, export_rig,
-                                                                    None, motion_objects,
+                                                                    source_action, motion_objects,
                                                                     True, True, "Export")
 
     # restore ik stretch settings
@@ -3283,20 +3283,23 @@ def prep_rigify_export(chr_cache, bake_animation, baked_actions,
                 f"Include strip {strip.name} ----------")
 
         if utils.set_mode("POSE"):
-            if False: # skip all this
-                if include_t_pose and t_pose_action:
-                    # push T-Pose to NLA first
-                    utils.log_info(f"Adding {t_pose_action.name} to NLA strips")
-                    track = export_rig.animation_data.nla_tracks[0]
-                    track.strips.new(t_pose_action.name, int(t_pose_action.frame_range[0]), t_pose_action)
-                    baked_actions.append(t_pose_action)
+            if include_t_pose and t_pose_action:
+                # push T-Pose to NLA first
+                utils.log_info(f"Adding {t_pose_action.name} to NLA strips")
+                track = export_rig.animation_data.nla_tracks.new()
+                track.strips.new(t_pose_action.name, int(t_pose_action.frame_range[0]), t_pose_action)
+                baked_actions.append(t_pose_action)
 
+            if False: # skip this
+            # for strip in strips:
                 # bake current timeline animation to export rig
+                if utils.safe_set_action(rigify_rig, strip.action):
+                    utils.log_info(f"set {strip.action.name} to active...")
                 action = None
                 if bake_animation:
                     utils.log_info(f"Baking NLA timeline to export rig...")
-                    action, key_actions = adv_bake_rigify_for_export(chr_cache, export_rig, objects, accessory_map)
-                    action.name = action_name
+                    action, key_actions = adv_bake_rigify_for_export(chr_cache, export_rig, objects, accessory_map, strip.action)
+                    action.name = strip.action.name + ".Modified"
                     baked_actions.append(action)
                     export_rig = chr_cache.rig_export_rig
 
@@ -3304,7 +3307,7 @@ def prep_rigify_export(chr_cache, bake_animation, baked_actions,
 
                 # push baked actions to NLA strip
                 if bake_animation and action:
-                    utils.log_info(f"Adding {action.name} to NLA strips")
+                    utils.log_info(f"Adding {strip.action.name} to NLA strips...")
                     track = export_rig.animation_data.nla_tracks.new()
                     strip = track.strips.new(action.name, int(action.frame_range[0]), action)
                     for key_obj in key_actions:
@@ -3426,6 +3429,7 @@ def bake_rig_animation(chr_cache, rig, source_action,
         utils.log_info(f"Baking to: {armature_action_name}")
         # frame range
         if source_action:
+            utils.log_info(f"Has source action to: {source_action.name}")
             start_frame = int(source_action.frame_range[0])
             end_frame = int(source_action.frame_range[1])
         else:
@@ -3437,6 +3441,7 @@ def bake_rig_animation(chr_cache, rig, source_action,
         if limit_view_layer:
             tmp_collection, layer_collections, to_hide = utils.limit_view_layer_to_collection("TMP_BAKE", rig, shape_key_objects)
 
+        utils.set_active_object(source_action)
         utils.set_active_object(rig)
         utils.set_mode("POSE")
 
@@ -3445,7 +3450,7 @@ def bake_rig_animation(chr_cache, rig, source_action,
                          frame_end=end_frame,
                          only_selected=True,
                          visual_keying=True,
-                         use_current_action=False,
+                         use_current_action=True,
                          clear_constraints=clear_constraints,
                          clean_curves=False,
                          bake_types={'POSE'})

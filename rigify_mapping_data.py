@@ -946,6 +946,49 @@ GENERIC_EXPORT_RIG = [
     # Eyes:
     ["DEF-eye.R", "DEF-spine.006", "CC_Base_R_Eye", "Z", "PLR"],
     ["DEF-eye.L", "DEF-spine.006", "CC_Base_L_Eye", "Z", "PLR"],
+    # Brows:
+    ["Hair_eyebrow.R", "DEF-spine.006", "CC_Base_R_Eyebrow", "Z", "PLR"],
+    ["Hair_eyebrow.L", "DEF-spine.006", "CC_Base_L_Eyebrow", "Z", "PLR"],
+    # Hair:
+    ["Hair", "DEF-spine.006", "CC_Hair", "Z", "PLR"],
+    ["Hair.001", "Hair", "CC_Hair.001", "Z", "PLR"],
+    ["Hair.002", "Hair.001", "CC_Hair.002", "Z", "PLR"],
+
+    ["Hair.004", "DEF-spine.006", "CC_Hair.004", "Z", "PLR"],
+    ["Hair.005", "Hair.004", "CC_Hair.005", "Z", "PLR"],
+    ["Hair.006", "Hair.005", "CC_Hair.006", "Z", "PLR"],
+
+    ["Hair.01.L", "DEF-spine.006", "CC_Hair.01.L", "Z", "PLR"],
+    ["Hair.02.L", "Hair.01.L", "CC_Hair.02.L", "Z", "PLR"],
+    ["Hair.03.L", "Hair.02.L", "CC_Hair.03.L", "Z", "PLR"],
+
+    ["Hair.05.L", "Hair.01.L", "CC_Hair.05.L", "Z", "PLR"],
+    ["Hair.06.L", "Hair.05.L", "CC_Hair.06.L", "Z", "PLR"],
+
+    ["Hair.Mid.01.L", "DEF-spine.006", "CC_Hair.Mid.01.L", "Z", "PLR"],
+    ["Hair.Mid.02.L", "Hair.Mid.01.L", "CC_Hair.Mid.02.L", "Z", "PLR"],
+    
+    ["Hair.Back.01.L", "DEF-spine.006", "CC_Hair.Back.01.L", "Z", "PLR"],
+    ["Hair.Back.02.L", "Hair.Back.01.L", "CC_Hair.Back.02.L", "Z", "PLR"],
+    
+    ["Hair.Back.05.L", "DEF-spine.006", "CC_Hair.Back.05.L", "Z", "PLR"],
+    ["Hair.Back.06.L", "Hair.Back.05.L", "CC_Hair.Back.06.L", "Z", "PLR"],
+
+    ["Hair.01.R", "DEF-spine.006", "CC_Hair.01.R", "Z", "PLR"],
+    ["Hair.02.R", "Hair.01.R", "CC_Hair.02.R", "Z", "PLR"],
+    ["Hair.03.R", "Hair.02.R", "CC_Hair.03.R", "Z", "PLR"],
+
+    ["Hair.05.R", "Hair.01.R", "CC_Hair.05.R", "Z", "PLR"],
+    ["Hair.06.R", "Hair.05.R", "CC_Hair.06.R", "Z", "PLR"],
+
+    ["Hair.Mid.01.R", "DEF-spine.006", "CC_Hair.Mid.01.R", "Z", "PLR"],
+    ["Hair.Mid.02.R", "Hair.Mid.01.R", "CC_Hair.Mid.02.R", "Z", "PLR"],
+    
+    ["Hair.Back.01.R", "DEF-spine.006", "CC_Hair.Back.01.R", "Z", "PLR"],
+    ["Hair.Back.02.R", "Hair.Back.01.R", "CC_Hair.Back.02.R", "Z", "PLR"],
+    
+    ["Hair.Back.05.R", "DEF-spine.006", "CC_Hair.Back.05.R", "Z", "PLR"],
+    ["Hair.Back.06.R", "Hair.Back.05.R", "CC_Hair.Back.06.R", "Z", "PLR"],
     # Jaw:
     ["DEF-jaw", "DEF-spine.006", "CC_Base_JawRoot", "X", "PLRT", "jaw_master"],
 ]

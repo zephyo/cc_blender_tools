@@ -2284,9 +2284,14 @@ def export_rigify(self, context, chr_cache, export_anim, file_path, include_sele
             bake_anim = use_anim,
             bake_anim_use_all_actions=export_actions,
             bake_anim_use_nla_strips=export_strips,
-            bake_anim_simplify_factor=self.animation_simplify,
+            bake_anim_simplify_factor=self.animation_simplify, 
+            bake_anim_force_startend_keying=False,
             use_armature_deform_only=True,
             add_leaf_bones = False,
+
+            apply_unit_scale = True,
+            apply_scale_options = "FBX_SCALE_UNITS", 
+
             #axis_forward = "-Y",
             #axis_up = "Z",
             mesh_smooth_type = ("FACE" if self.export_face_smoothing else "OFF"),
