@@ -2272,6 +2272,12 @@ def export_rigify(self, context, chr_cache, export_anim, file_path, include_sele
 
     armature_object, armature_data = rigutils.rename_armature(export_rig, name)
 
+    if include_textures: # implies chose mesh option
+        for obj in objects:
+            if obj.type == "MESH":
+                obj.select_set(True)
+        arm.select_set(False)
+
     # export as fbx
     bpy.ops.export_scene.fbx(filepath=file_path,
             use_selection = True,

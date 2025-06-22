@@ -3278,38 +3278,40 @@ def prep_rigify_export(chr_cache, bake_animation, baked_actions,
         for strip in track.strips:
             strips.append(strip)
         for strip in strips:
-            track.strips.remove(strip)
+            # track.strips.remove(strip)
+            utils.log_info(
+                f"Include strip {strip.name} ----------")
 
         if utils.set_mode("POSE"):
+            if False: # skip all this
+                if include_t_pose and t_pose_action:
+                    # push T-Pose to NLA first
+                    utils.log_info(f"Adding {t_pose_action.name} to NLA strips")
+                    track = export_rig.animation_data.nla_tracks[0]
+                    track.strips.new(t_pose_action.name, int(t_pose_action.frame_range[0]), t_pose_action)
+                    baked_actions.append(t_pose_action)
 
-            if include_t_pose and t_pose_action:
-                # push T-Pose to NLA first
-                utils.log_info(f"Adding {t_pose_action.name} to NLA strips")
-                track = export_rig.animation_data.nla_tracks[0]
-                track.strips.new(t_pose_action.name, int(t_pose_action.frame_range[0]), t_pose_action)
-                baked_actions.append(t_pose_action)
+                # bake current timeline animation to export rig
+                action = None
+                if bake_animation:
+                    utils.log_info(f"Baking NLA timeline to export rig...")
+                    action, key_actions = adv_bake_rigify_for_export(chr_cache, export_rig, objects, accessory_map)
+                    action.name = action_name
+                    baked_actions.append(action)
+                    export_rig = chr_cache.rig_export_rig
 
-            # bake current timeline animation to export rig
-            action = None
-            if bake_animation:
-                utils.log_info(f"Baking NLA timeline to export rig...")
-                action, key_actions = adv_bake_rigify_for_export(chr_cache, export_rig, objects, accessory_map)
-                action.name = action_name
-                baked_actions.append(action)
-                export_rig = chr_cache.rig_export_rig
+                utils.safe_set_action(export_rig, None)
 
-            utils.safe_set_action(export_rig, None)
-
-            # push baked actions to NLA strip
-            if bake_animation and action:
-                utils.log_info(f"Adding {action.name} to NLA strips")
-                track = export_rig.animation_data.nla_tracks.new()
-                strip = track.strips.new(action.name, int(action.frame_range[0]), action)
-                for key_obj in key_actions:
-                    key_action = key_actions[key_obj]
-                    utils.log_info(f"Adding {key_action.name} to NLA strips")
-                    track = key_obj.data.shape_keys.animation_data.nla_tracks.new()
-                    strip = track.strips.new(key_action.name, int(key_action.frame_range[0]), key_action)
+                # push baked actions to NLA strip
+                if bake_animation and action:
+                    utils.log_info(f"Adding {action.name} to NLA strips")
+                    track = export_rig.animation_data.nla_tracks.new()
+                    strip = track.strips.new(action.name, int(action.frame_range[0]), action)
+                    for key_obj in key_actions:
+                        key_action = key_actions[key_obj]
+                        utils.log_info(f"Adding {key_action.name} to NLA strips")
+                        track = key_obj.data.shape_keys.animation_data.nla_tracks.new()
+                        strip = track.strips.new(key_action.name, int(key_action.frame_range[0]), key_action)
 
             # reparent the child objects to the export rig
             for child in rigify_rig.children:
