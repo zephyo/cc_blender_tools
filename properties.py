@@ -2416,7 +2416,7 @@ class CC3CharacterCache(bpy.types.PropertyGroup):
                     self.rigify_expression_rig = "RIGIFY"
                 else:
                     self.rigify_expression_rig = "NONE"
-                utils.set_prop(rig, self.rigify_expression_rig)
+                # utils.set_prop(rig, self.rigify_expression_rig)
         # ensure the facial profile & viseme profile types are in the character data
         self.get_facial_profile()
 
