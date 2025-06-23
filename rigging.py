@@ -2928,7 +2928,6 @@ def clear_drivers_and_constraints(rig):
             bones.clear_constraints(rig, pose_bone.name)
             pose_bone.custom_shape = None
 
-
 def generate_export_rig(chr_cache, use_t_pose=False, t_pose_action=None,
                         link_target=False, bone_naming="CC"):
     rigify_rig = chr_cache.get_armature()
@@ -2951,6 +2950,8 @@ def generate_export_rig(chr_cache, use_t_pose=False, t_pose_action=None,
     # compile a list of all deformation bones
     export_bones = []
     for export_def in rigify_mapping_data.GENERIC_EXPORT_RIG:
+        if rigutils.bone_name_in_armature_regex(rigify_rig, export_def[0]) is False: 
+            continue
         export_bones.append(export_def[0])
     accessory_bones, accessory_def_bones = get_extension_export_bones(export_rig)
     if accessory_bones:
@@ -2988,6 +2989,9 @@ def generate_export_rig(chr_cache, use_t_pose=False, t_pose_action=None,
             bind_pose_is_a_pose = True
 
         for export_def in rigify_mapping_data.GENERIC_EXPORT_RIG:
+            if rigutils.bone_name_in_armature_regex(rigify_rig, export_def[0]) is False: 
+                utils.log_info("Could not find bone: " + export_def[0])
+                continue
             bone_name = export_def[0]
             parent_name = export_def[1]
             export_name = export_def[2]
@@ -3069,6 +3073,8 @@ def generate_export_rig(chr_cache, use_t_pose=False, t_pose_action=None,
         # rename bones for export
         if not link_target:
             for export_def in rigify_mapping_data.GENERIC_EXPORT_RIG:
+                if rigutils.bone_name_in_armature_regex(rigify_rig, export_def[0]) is False: 
+                    continue
                 bone_name = export_def[0]
                 export_name = export_def[2]
                 if bone_naming == "METARIG":
@@ -3127,6 +3133,8 @@ def generate_export_rig(chr_cache, use_t_pose=False, t_pose_action=None,
     # copy constraints for baking animations
     if rigutils.select_rig(export_rig):
         for export_def in rigify_mapping_data.GENERIC_EXPORT_RIG:
+            if rigutils.bone_name_in_armature_regex(rigify_rig, export_def[0]) is False: 
+                continue
             rigify_bone_name = export_def[0]
             export_bone_name = export_def[2]
             if rigify_bone_name == "root": continue
