@@ -2485,7 +2485,7 @@ class CC3Export(bpy.types.Operator):
         )
 
     animation_simplify: bpy.props.FloatProperty(
-        default=1.0,
+        default=0.0,
         min=0.0, max=10.0,
         name="Simplify Animation",
         description="How much to simplify baked values (0.0 to disable, higher values for more simplification)",
